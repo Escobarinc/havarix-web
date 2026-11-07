@@ -1,0 +1,3 @@
+# Testovací náhled – neindexovat. Při spuštění nahradit.
+User-agent: *
+Disallow: /

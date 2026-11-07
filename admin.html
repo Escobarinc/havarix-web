@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="cs">
+<head>
+ <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+ <meta name="robots" content="noindex,nofollow">
+ <meta name="theme-color" content="#061f45">
+ <title>Administrace | HAVARIX</title>
+ <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+ <header class="adm-top">
+  <a class="brand" href="index.html" aria-label="HAVARIX – web"><svg viewBox="0 0 60 58" fill="none" aria-hidden="true"><path d="M5 29 29 6l25 23M12 26v26h36V26" stroke="#fff" stroke-width="6" stroke-linejoin="round"/><path d="M30 20C21 32 18 39 18 44a12 12 0 0 0 24 0c0-5-3-12-12-24Z" fill="#2ba7ea"/><path d="M41 3h9v12" fill="#e00019"/></svg><span>HAVARI<b>X</b></span><small>Administrace</small></a>
+  <a class="view-web" href="page.html?view=pujcovna" target="_blank" rel="noopener">Zobrazit půjčovnu na webu ↗</a>
+ </header>
+ <div class="test-banner" role="note"><b>Testovací režim:</b> změny i poptávky se zatím ukládají jen v tomto prohlížeči. Ukládání na server a přihlášení heslem se napojí při spuštění webu.</div>
+ <div class="adm-layout">
+  <nav class="adm-nav" aria-label="Sekce administrace">
+   <button type="button" data-tab="stroje" class="on"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"/></svg>Stroje</button>
+   <button type="button" data-tab="kategorie"><svg viewBox="0 0 24 24"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></svg>Kategorie</button>
+   <button type="button" data-tab="sluzby"><svg viewBox="0 0 24 24"><path d="M3 6h11v10H3zM14 9h4l3 3v4h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg>Doplňkové služby</button>
+   <button type="button" data-tab="poptavky"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>Poptávky <span class="count" id="inq-count"></span></button>
+   <button type="button" data-tab="nastaveni"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg>Nastavení a záloha</button>
+  </nav>
+  <main class="adm-main" id="adm-main" tabindex="-1"></main>
+ </div>
+ <div class="toast" id="toast" role="status" aria-live="polite"></div>
+ <script src="rental-data.js"></script><script src="rental-store.js"></script><script src="admin.js"></script>
+</body>
+</html>

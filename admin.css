@@ -102,3 +102,5 @@ table.rows{width:100%;border-collapse:collapse;margin-bottom:10px}
 .toast.show{opacity:1;transform:translateX(-50%)}.toast.bad{background:var(--red)}
 @media(max-width:900px){.adm-layout{grid-template-columns:1fr}.adm-nav{flex-direction:row;overflow-x:auto;padding:8px}.adm-nav button{white-space:nowrap;width:auto}.adm-main{padding:20px 16px 50px}.form-grid{grid-template-columns:1fr}.form-grid .card:first-child{grid-template-columns:1fr 1fr}.brand small{display:none}.view-web{font-size:12px}}
 @media(max-width:520px){.form-grid .card:first-child{grid-template-columns:1fr}.inq dl div{grid-template-columns:1fr;gap:2px}.adm-top{padding:0 14px}}
+.logo-pill{display:inline-flex;background:#fff;border-radius:6px;padding:5px 10px}
+.logo-pill img{height:34px;width:auto;display:block}

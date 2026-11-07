@@ -28,3 +28,8 @@ footer.site-footer{height:70px}
 .top-cta .cta-ic{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:1.8;flex:none}
 .mobile-nav .sub{padding-left:22px!important;font-size:14px;color:#3d5876!important}
 .mobile-nav .mobile-cta{margin-top:8px;background:var(--red);color:#fff!important;border-radius:8px;text-align:center!important;font-weight:700}
+/* logo HAVARIX (obrázek) */
+.brand-logo{display:block;height:58px;width:auto}
+@media(max-width:1250px){.brand-logo{height:50px}}
+@media(max-width:900px){.brand-logo{height:46px}}
+@media(max-width:520px){.brand-logo{height:40px}}

@@ -1,5 +1,6 @@
 /* HAVARIX – podstránky. Každá stránka má vlastní úvod a bloky podle grafického návrhu (HAVARIX-podstranky, HAVARIX-pet-kroku). */
-const route = new URLSearchParams(location.search).get('view') || 'sluzby';
+const routeRaw = new URLSearchParams(location.search).get('view') || 'sluzby';
+const route = ({dokumentace:'diagnostika'})[routeRaw] || routeRaw;
 const root = document.getElementById('dynamic-page');
 const IMG = 'assets/img/';
 
@@ -43,13 +44,13 @@ const arrow = ic('arrow', 'ic-arrow');
 /* ---------- data ---------- */
 const STEPS = [
   {id:'havarie', title:'Havárie', photo:'step_havarie', copy:'Vytopení, průsak nebo jiné poškození vodou.'},
-  {id:'dokumentace', title:'Dokumentace', photo:'step_dokumentace', copy:'Rychle a správně zdokumentujeme škody pro pojišťovnu.'},
+  {id:'diagnostika', title:'Diagnostika', photo:'step_dokumentace', copy:'Kamerová prohlídka, měření vlhkosti a zjištění příčiny. Pořídíme aktuální záznam stavu.'},
   {id:'rozpocet', title:'Rozpočet', photo:'step_rozpocet', copy:'Připravíme přehledný rozpočet na vysoušení, sanaci a opravy.'},
   {id:'vysouseni', title:'Vysoušení a sanace', photo:'step_vysouseni', copy:'Profesionálně vysušíme konstrukce, odstraníme vlhkost a následky poškození.'},
   {id:'pojisteni', title:'Revize pojištění', photo:'step_pojisteni', copy:'Pomůžeme s hlášením škody a prověříme vaše pojistné krytí.'}
 ];
 const SERVICES = [
-  {title:'Diagnostika vlhkosti', photo:'sl-diagnostika', href:'dokumentace', copy:'Přesně zjistíme rozsah poškození, míru zavlhnutí a skrytá rizika, abychom navrhli nejúčinnější postup obnovy.'},
+  {title:'Diagnostika a kamera', photo:'sl-diagnostika', href:'diagnostika', copy:'Zjistíme příčinu havárie – i kamerovou prohlídkou kanalizace a potrubí – změříme vlhkost a pořídíme záznam stavu pro pojišťovnu.'},
   {title:'Profesionální vysoušení', photo:'sl-vysouseni', href:'vysouseni', copy:'Rychle a bezpečně odstraníme přebytečnou vlhkost z konstrukcí, podlah i zdiva pomocí výkonné a šetrné techniky.'},
   {title:'Sanace a opravy', photo:'sl-sanace', href:'vysouseni', copy:'Odstraníme následky vytopení – sanace zdiva, protiplísňová opatření, opravy omítek, podlah i dalších poškozených částí.'},
   {title:'Pomoc s pojištěním', photo:'sl-pojisteni', href:'pojisteni', copy:'Připravíme podklady, zdokumentujeme škody a pomůžeme s komunikací s pojišťovnou bez zbytečných průtahů.'}
@@ -60,7 +61,7 @@ const FAQ = [
   {cat:'vlhkost', q:'Jak poznám vlhkost ve zdi?', a:'Vlhké mapy, změny barvy, odlupující se malba, zápach nebo plíseň jsou signály. Přesný rozsah však ukáže až vhodné měření.'},
   {cat:'vlhkost', q:'Jak dlouho trvá vysoušení?', a:'Záleží na množství vody, skladbě konstrukce a podmínkách v objektu. Bez měření nelze spolehlivě určit délku.'},
   {cat:'vlhkost', q:'Může se po vysoušení hned malovat?', a:'Ne vždy. Před opravou povrchů je potřeba ověřit stav vlhkosti a případné další poškození materiálu.'},
-  {cat:'pojisteni', q:'Mám nejdřív volat pojišťovnu?', a:'Škodu nahlaste podle podmínek smlouvy bez zbytečného odkladu a průběžně dokumentujte stav. Záchranné kroky kvůli bezpečnosti neodkládejte.'},
+  {cat:'pojisteni', q:'Mám nejdřív volat pojišťovnu?', a:'Ano – ale nejdřív na asistenční linku své pojišťovny. Nahlaste havárii a řekněte, že jako realizační firmu chcete HAVARIX, a nechte si to potvrdit. Asistence pak obvykle hradí diagnostiku a odstranění příčiny, pojišťovna další opravy (vysoušení, omítky). Bez odsouhlasení asistence nemusí zásah proplatit. Záchranné kroky kvůli bezpečnosti neodkládejte.'},
   {cat:'pojisteni', q:'Co má obsahovat rozpočet pro pojišťovnu?', a:'Rozsah zásahu, popis jednotlivých prací, materiály, předpokládané množství a informace o položkách, které mohou vyžadovat upřesnění.'}
 ];
 const CATS = {havarie:{label:'Havárie', icon:'drop'}, vlhkost:{label:'Vlhkost', icon:'waves'}, pojisteni:{label:'Pojištění', icon:'shield'}};
@@ -91,6 +92,13 @@ function photoCards(items, cls = '') {
 function checklist(items) { return `<ul class="checklist">${items.map(t => `<li>${ic('check')}${t}</li>`).join('')}</ul>`; }
 function callout(title = 'Nevíte, kde začít?', text = 'Krátký průvodce vám pomůže zorientovat se v dalším postupu.', cta = 'Spustit průvodce', href = 'pruvodce', photo = '') {
   return `<section class="page-section dark"><div class="callout${photo ? ' callout-photo' : ''}">${photo ? `<img src="${IMG}${photo}.jpg" alt="" loading="lazy">` : ''}<div class="callout-text"><h2>${title}</h2><p>${text}</p><a class="primary-link" href="page.html?view=${href}">${cta} ${arrow}</a></div></div></section>`;
+}
+
+function insuranceBox() {
+  return `<section class="page-section alt"><div class="ins-box"><span class="ins-badge">${ic('fileCheck')}Důležité kvůli pojišťovně</span><h2>Nejdřív zavolejte asistenční službu své pojišťovny</h2><p class="ins-lead">Aby pojišťovna havárii proplatila bez komplikací, nahlaste ji nejdřív na asistenční linku a řekněte, že jako realizační firmu chcete HAVARIX. Nechte si to potvrdit.</p>
+    <div class="ins-split"><div class="ins-col">${ic('shield')}<div><h3>Asistence pojišťovny</h3><p>Obvykle hradí diagnostiku a odstranění příčiny havárie. Limit bývá 10 000–15 000 Kč podle vaší smlouvy.</p></div></div><div class="ins-col">${ic('docs')}<div><h3>Pojišťovna</h3><p>Hradí další odstranění škod – vysoušení, nové omítky a opravy.</p></div></div></div>
+    <ol class="ins-steps"><li><b>Zavolejte asistenci</b><span>a nechte si potvrdit HAVARIX jako realizační firmu.</span></li><li><b>Přijedeme k diagnostice</b><span>zjistíme příčinu a pořídíme aktuální záznam stavu – měření, fotky, kamera.</span></li><li><b>Předáme podklady</b><span>pro asistenci i pojišťovnu a pokračujeme vysoušením a opravami.</span></li></ol>
+    <p class="ins-warn">Bez odsouhlasení asistence nemusí zásah proplatit, nebo ho proplatí se zpožděním. Přesné podmínky se liší podle vaší pojistné smlouvy.</p></div></section>`;
 }
 
 /* ---------- jednotlivé stránky ---------- */
@@ -136,17 +144,18 @@ const PAGES = {
     `<section class="page-section dark overlap" id="page-details"><div class="wizard-card" id="wizard"><div class="wizard-head"><span class="dots" id="wizard-dots"></span><p class="wizard-progress" id="wizard-progress">Krok 1 ze 3</p></div><h2 id="wizard-heading"></h2><p id="wizard-description"></p><div class="wizard-options" id="wizard-options"></div><div class="wizard-controls"><button id="wizard-back" type="button">← Zpět</button><button class="primary-link" id="wizard-next" type="button" disabled>Pokračovat ${arrow}</button></div></div></section>`, init: initWizard},
 
   havarie: {name:'Havárie', step:0, render: () =>
-    hero({photo:'hero-havarie', before: stepper(0), kicker:'KROK 01 — <span>HAVÁRIE</span>', title:'Voda v domě?<br>Zachovejte klid.', lead:'Právě řešíte havárii vody? Postupujte podle těchto 3 kroků, minimalizujete škody a ochráníte svůj domov.', cls:'hero-tall',
-      extra:`<ol class="first-aid">${[['faucet', 'Zastavte přívod vody', 'Uzavřete hlavní uzávěr vody, případně lokální ventil u postiženého zařízení (pračka, bojler, WC apod.).'], ['shield', 'Zajistěte bezpečí', 'Odpojte ohrožené elektrospotřebiče, chraňte sebe i rodinu a omezte pohyb v zasažených prostorách.'], ['phone', 'Zavolejte odborníkům', 'Kontaktujte HAVARIX – přijedeme, zastavíme škody a zahájíme profesionální sanaci.']].map(([i, t, c], n) => `<li>${ic(i)}<div><h3><b>${n + 1}.</b> ${t}</h3><p>${c}</p></div></li>`).join('')}</ol><a class="primary-link" href="page.html?view=kontakt">Potřebuji pomoc ihned ${arrow}</a>`}) +
-    `<section class="page-section dark step-band" id="page-details"><div class="band-label"><span class="badge">01<small>/05</small></span><h2>HAVÁRIE</h2></div><p>Jste v situaci, kdy voda nečekaně pronikla do vašeho domova. Správná první reakce je zásadní.</p><div class="band-photos">${['hv-potrubi', 'hv-strop', 'hv-podlaha'].map(p => `<img src="${IMG}${p}.jpg" alt="" loading="lazy">`).join('')}</div></section>` + stepNav(0)},
+    hero({photo:'hero-havarie', before: stepper(0), kicker:'KROK 01 — <span>HAVÁRIE</span>', title:'Voda v domě?<br>Zachovejte klid.', lead:'Právě řešíte havárii vody? Postupujte podle těchto 4 kroků, minimalizujete škody a ochráníte svůj domov.', cls:'hero-tall',
+      extra:`<ol class="first-aid">${[['faucet', 'Zastavte přívod vody', 'Uzavřete hlavní uzávěr vody, případně lokální ventil u postiženého zařízení (pračka, bojler, WC apod.).'], ['shield', 'Zajistěte bezpečí', 'Odpojte ohrožené elektrospotřebiče, chraňte sebe i rodinu a omezte pohyb v zasažených prostorách.'], ['fileCheck', 'Volejte asistenci pojišťovny', 'Nahlaste havárii na asistenční linku své pojišťovny a řekněte, že jako realizační firmu chcete HAVARIX. Nechte si to potvrdit.'], ['phone', 'Zavolejte HAVARIX', 'Přijedeme k diagnostice, zjistíme příčinu a pořídíme aktuální záznam stavu pro pojišťovnu.']].map(([i, t, c], n) => `<li>${ic(i)}<div><h3><b>${n + 1}.</b> ${t}</h3><p>${c}</p></div></li>`).join('')}</ol><a class="primary-link" href="page.html?view=kontakt">Potřebuji pomoc ihned ${arrow}</a>`}) +
+    `<section class="page-section dark step-band" id="page-details"><div class="band-label"><span class="badge">01<small>/05</small></span><h2>HAVÁRIE</h2></div><p>Jste v situaci, kdy voda nečekaně pronikla do vašeho domova. Správná první reakce je zásadní.</p><div class="band-photos">${['hv-potrubi', 'hv-strop', 'hv-podlaha'].map(p => `<img src="${IMG}${p}.jpg" alt="" loading="lazy">`).join('')}</div></section>` + insuranceBox() + stepNav(0)},
 
-  dokumentace: {name:'Dokumentace', step:1, render: () =>
-    hero({photo:'hero-dokumentace', before: stepper(1), title:'Změříme škody.<br>Vše zdokumentujeme.', lead:'Přesně změříme rozsah zasažení vlhkostí, detailně vše zdokumentujeme a připravíme kompletní podklady pro další postup i komunikaci s pojišťovnou.', cta:'Objednat diagnostiku', href:'page.html?view=kontakt', icon:'calendar', cls:'hero-rule'}) +
-    `<section class="page-section dark" id="page-details"><div class="cards-with-aside">${photoCards([
+  diagnostika: {name:'Diagnostika', step:1, render: () =>
+    hero({photo:'hero-dokumentace', before: stepper(1), kicker:'KROK 02 — <span>DIAGNOSTIKA</span>', title:'Zjistíme příčinu.<br>Vše změříme.', lead:'Přijedeme jako první, najdeme příčinu havárie, změříme vlhkost a pořídíme aktuální záznam stavu – podklad pro asistenci pojišťovny i pro další postup.', cta:'Objednat diagnostiku', href:'page.html?view=kontakt', icon:'calendar'}) +
+    `<section class="page-section dark" id="page-details"><div class="camera-feature" id="kamera"><div class="cam-icon">${ic('camera')}<span class="tag-red">Častá příčina havárií</span></div><div class="cam-text"><p class="cam-kicker">Kamerová prohlídka</p><h2>Kamerová prohlídka kanalizace a potrubí</h2><p>Inspekční kamerou projedeme kanalizaci i potrubí a přesně ukážeme, kde je příčina – prasklina, ucpání nebo netěsnost. Bez zbytečného bourání a se záznamem jako podkladem pro pojišťovnu.</p>${checklist(['Najdeme přesné místo poruchy', 'Bez zbytečného bourání', 'Fotky a záznam z prohlídky jako podklad'])}<a class="primary-link" href="page.html?view=kontakt">Objednat kamerovou prohlídku ${arrow}</a></div></div></section>` +
+    `<section class="page-section dark"><div class="cards-with-aside">${photoCards([
       {icon:'percent', title:'Měření vlhkosti', photo:'dk-mereni', copy:'Profesionálními přístroji zjistíme aktuální vlhkost konstrukcí a rozsah zasažení.'},
-      {icon:'camera', title:'Fotodokumentace', photo:'dk-foto', copy:'Detailně zdokumentujeme poškození všech zasažených prostor, včetně rozsahových snímků.'},
-      {icon:'fileCheck', title:'Podklady pro pojišťovnu', photo:'dk-podklady', copy:'Připravíme přehledný soubor měření, fotografií a zjištění, který odpovídá požadavkům pojišťoven.'}
-    ], 'three icon-top')}<aside class="aside-list">${ic('checklist')}<h3>Kontrolní seznam</h3>${checklist(['Zaměření vlhkosti v klíčových místech', 'Detailní fotodokumentace poškození', 'Záznam rozsahu a příčin zatečení', 'Příprava podkladů pro pojišťovnu'])}</aside></div></section>` + stepNav(1)},
+      {icon:'camera', title:'Záznam stavu', photo:'dk-foto', copy:'Fotky a měření všech zasažených míst ihned po havárii – aktuální stav, než se cokoli změní.'},
+      {icon:'fileCheck', title:'Podklady pro pojišťovnu', photo:'dk-podklady', copy:'Připravíme přehledný soubor měření, fotografií a zjištění pro asistenci i pojišťovnu.'}
+    ], 'three icon-top')}<aside class="aside-list">${ic('checklist')}<h3>Co při diagnostice uděláme</h3>${checklist(['Kamerová prohlídka kanalizace a potrubí', 'Zjištění příčiny a místa úniku', 'Měření vlhkosti v klíčových místech', 'Aktuální záznam stavu', 'Podklady pro asistenci i pojišťovnu'])}</aside></div></section>` + insuranceBox() + stepNav(1)},
 
   rozpocet: {name:'Rozpočet', step:2, render: () =>
     hero({photo:'hero-rozpocet', before: stepper(2), title:'Přehledný plán.<br>Jasné náklady.', lead:'Připravíme vám srozumitelný a položkový rozpočet oprav, abyste přesně věděli, co vás čeká – bez skrytých nákladů.', cta:'Chci rozpočet', href:'page.html?view=kontakt'}) +
@@ -173,7 +182,7 @@ const PAGES = {
 
   pojisteni: {name:'Revize pojištění', step:4, render: () =>
     hero({photo:'hero-pojisteni', before: stepper(4), kicker:'<span class="badge">05 / 05</span> REVIZE POJIŠTĚNÍ', title:'Pomůžeme vám<br>i s pojištěním.', lead:'Zkontrolujeme vaši pojistnou smlouvu, připravíme potřebné podklady a doporučíme další postup, aby řešení škody probíhalo hladce.', cta:'Chci prověřit pojištění', href:'page.html?view=kontakt', cls:'hero-rule'}) +
-    `<section class="page-section dark overlap" id="page-details">${iconCards([['docSearch', 'Kontrola krytí'], ['docs', 'Podklady pro pojišťovnu'], ['sign', 'Doporučení dalšího postupu']], 'big-white')}</section>` + stepNav(4)}
+    `<section class="page-section dark overlap" id="page-details">${iconCards([['docSearch', 'Kontrola krytí'], ['docs', 'Podklady pro pojišťovnu'], ['sign', 'Doporučení dalšího postupu']], 'big-white')}</section>` + insuranceBox() + stepNav(4)}
 };
 
 /* ---------- vykreslení ---------- */
@@ -233,8 +242,8 @@ function initWizard() {
     if (st.i === 3) {
       $('wizard-progress').textContent = 'Doporučení';
       $('wizard-heading').textContent = 'Máte základní přehled.';
-      $('wizard-description').textContent = st.a[0] === 0 ? 'Pokud voda stále uniká, řešte nejprve bezpečnost a zastavení úniku. Při riziku elektřiny nevstupujte do ohrožených prostor.' : st.a[0] === 1 ? 'Doporučujeme odborné měření a dokumentaci, než se začne s opravami.' : 'Začněte dokumentací stavu a přehledným rozpočtem potřebných prací.';
-      const step = st.a[0] === 0 ? 'havarie' : st.a[0] === 1 ? 'dokumentace' : 'rozpocet';
+      $('wizard-description').textContent = st.a[0] === 0 ? 'Pokud voda stále uniká, řešte nejprve bezpečnost a zastavení úniku. Při riziku elektřiny nevstupujte do ohrožených prostor. Pak nahlaste havárii na asistenční linku své pojišťovny a nechte si potvrdit HAVARIX jako realizační firmu.' : st.a[0] === 1 ? 'Doporučujeme odborné měření a dokumentaci, než se začne s opravami.' : 'Začněte dokumentací stavu a přehledným rozpočtem potřebných prací.';
+      const step = st.a[0] === 0 ? 'havarie' : st.a[0] === 1 ? 'diagnostika' : 'rozpocet';
       $('wizard-options').innerHTML = `<div class="help-card"><h3>Vaše odpovědi</h3><p>${st.a.map((a, i) => Q[i].o[a][1]).join(' · ')}</p><a class="primary-link" href="page.html?view=kontakt">Kontaktovat HAVARIX ${arrow}</a> <a class="secondary-link" href="page.html?view=${step}">Co dělat dál</a></div>`;
       $('wizard-back').hidden = false; $('wizard-next').hidden = true; return;
     }

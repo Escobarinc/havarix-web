@@ -325,3 +325,30 @@ fieldset.form-field legend{font-weight:800;font-size:14px;margin-bottom:8px}
 .item-media img,.gallery-main img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:14px;box-sizing:border-box}
 .gallery-main img{padding:24px}
 .item-media.no-photo,.gallery-main.no-photo{background:linear-gradient(135deg,#eaf1f8,#dbe7f2)}
+
+/* ===== Diagnostika: zvýrazněná kamera + blok o pojišťovně (listopad 2026) ===== */
+.camera-feature{display:grid;grid-template-columns:260px 1fr;gap:36px;align-items:center;background:linear-gradient(135deg,#0b3a72,#06264c);border:2px solid #e00019;border-radius:14px;padding:36px 40px;box-shadow:0 0 0 6px #e0001926,0 18px 44px #0006}
+.cam-icon{position:relative;display:grid;place-items:center;aspect-ratio:1;border-radius:50%;background:#fff;color:#0a2244;box-shadow:0 0 0 8px #ffffff22}
+.cam-icon .ic{width:46%;height:46%;stroke-width:1.3}
+.tag-red{position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);white-space:nowrap;background:#e00019;color:#fff;font-weight:900;font-size:13px;letter-spacing:.5px;padding:7px 14px;border-radius:6px;box-shadow:0 4px 12px #0005}
+.cam-kicker{margin:0 0 8px;font-size:13px;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:#ff5a68}
+.cam-text h2{font-size:clamp(28px,3.2vw,44px);line-height:1.08;margin:0 0 14px;letter-spacing:-1px}
+.cam-text>p{font-size:18px;line-height:1.55;color:#dbe8f5;margin:0 0 18px;max-width:680px}
+.cam-text .checklist{margin-bottom:24px}
+.ins-box{background:#fff;border:2px solid #0a2a52;border-radius:14px;padding:34px 38px;max-width:1100px}
+.ins-badge{display:inline-flex;align-items:center;gap:8px;background:#e00019;color:#fff;font-weight:900;font-size:13px;letter-spacing:1px;text-transform:uppercase;padding:7px 14px;border-radius:6px}
+.ins-badge .ic{width:18px;height:18px}
+.ins-box h2{font-size:clamp(24px,2.6vw,34px);margin:16px 0 10px;color:#0a2244;line-height:1.15}
+.ins-lead{font-size:18px;line-height:1.55;color:#2f465d;margin:0 0 22px}
+.ins-split{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.ins-col{display:flex;gap:14px;align-items:flex-start;background:#eef5fb;border-radius:10px;padding:18px 20px}
+.ins-col>.ic{width:40px;height:40px;color:#0a2a52;flex:none}
+.ins-col h3{margin:0 0 4px;font-size:19px;color:#0a2244}
+.ins-col p{margin:0;font-size:15px;line-height:1.5;color:#3c5168}
+.ins-steps{list-style:none;padding:0;margin:0 0 18px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;counter-reset:ins}
+.ins-steps li{counter-increment:ins;position:relative;padding:16px 16px 16px 60px;border:1px solid #d5e2ec;border-radius:10px}
+.ins-steps li::before{content:counter(ins);position:absolute;left:16px;top:16px;width:32px;height:32px;border-radius:50%;background:#e00019;color:#fff;display:grid;place-items:center;font-weight:900}
+.ins-steps b{display:block;color:#0a2244;font-size:16px;margin-bottom:3px}
+.ins-steps span{font-size:14px;line-height:1.45;color:#3c5168}
+.ins-warn{margin:0;font-size:14px;color:#8a1520;background:#fff1f2;border-left:4px solid #e00019;padding:10px 14px;border-radius:4px}
+@media(max-width:900px){.camera-feature{grid-template-columns:1fr;padding:28px 22px;justify-items:start}.cam-icon{width:170px}.ins-split,.ins-steps{grid-template-columns:1fr}.ins-box{padding:24px 20px}}

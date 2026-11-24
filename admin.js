@@ -5,6 +5,8 @@
   const main = document.getElementById('adm-main');
   let d = S.get();
   let tab = 'stroje', editing = null, filter = {cat:'', state:'', q:''}, inqFilter = '';
+  let por = S.getPoradna(), editingArt = null;
+  function persistPor(msg = 'Uloženo') { if (S.savePoradna(por)) toast(msg); else toast('Uložení se nezdařilo – úložiště prohlížeče je plné (zmenšete nebo odeberte fotografie).', true); }
 
   const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[c]));
   const num = v => { const n = parseFloat(String(v).replace(/\s/g, '').replace(',', '.')); return isFinite(n) ? n : null; };
@@ -17,17 +19,17 @@
   function persist(msg = 'Uloženo') { if (S.save(d)) toast(msg); else toast('Uložení se nezdařilo – úložiště prohlížeče je plné (zmenšete nebo odeberte fotografie).', true); }
   function updateCount() { const n = S.inquiries().filter(i => i.status === 'nova').length; document.getElementById('inq-count').textContent = n || ''; }
 
-  document.querySelectorAll('.adm-nav button').forEach(b => b.addEventListener('click', () => { tab = b.dataset.tab; editing = null; render(); }));
+  document.querySelectorAll('.adm-nav button').forEach(b => b.addEventListener('click', () => { tab = b.dataset.tab; editing = null; editingArt = null; render(); }));
   function render() {
     document.querySelectorAll('.adm-nav button').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
-    main.innerHTML = editing ? itemForm() : ({stroje:itemList, kategorie:catList, sluzby:serviceList, poptavky:inqList, nastaveni:settings}[tab])();
+    main.innerHTML = editing ? itemForm() : editingArt ? artForm() : ({stroje:itemList, kategorie:catList, sluzby:serviceList, poptavky:inqList, clanky:artList, nastaveni:settings}[tab])();
     bind(); updateCount(); main.focus({preventScroll:true});
   }
 
   /* ---------------- STROJE ---------------- */
   function itemList() {
     const items = d.items.filter(i => (!filter.cat || i.category === filter.cat) && (!filter.state || (filter.state === 'on' ? i.active : !i.active)) && (!filter.q || i.name.toLowerCase().includes(filter.q.toLowerCase())));
-    return `<div class="head"><div><h1>Stroje</h1><p>${d.items.length} strojů · na webu ${d.items.filter(i => i.active).length} · skryté ${d.items.filter(i => !i.active).length}</p></div><button class="btn red" data-act="new">+ Přidat stroj</button></div>
+    return `<div class="head"><div><p class="section-tag">Půjčovna</p><h1>Stroje</h1><p>${d.items.length} strojů · na webu ${d.items.filter(i => i.active).length} · skryté ${d.items.filter(i => !i.active).length}</p></div><button class="btn red" data-act="new">+ Přidat stroj</button></div>
       <div class="filters"><input type="search" id="f-q" placeholder="Hledat stroj…" value="${esc(filter.q)}"><select id="f-cat"><option value="">Všechny kategorie</option>${d.categories.map(c => `<option value="${c.id}"${filter.cat === c.id ? ' selected' : ''}>${esc(c.name)}</option>`).join('')}</select><select id="f-state"><option value="">Vše</option><option value="on"${filter.state === 'on' ? ' selected' : ''}>Na webu</option><option value="off"${filter.state === 'off' ? ' selected' : ''}>Skryté</option></select></div>
       <div class="table-card"><table class="list"><thead><tr><th></th><th>Stroj</th><th>Kategorie</th><th>Ks</th><th>Cena od / den</th><th>Na webu</th><th></th></tr></thead><tbody>
       ${items.map(i => { const p = S.fromPrice(i); const idx = d.items.indexOf(i); return `<tr${i.active ? '' : ' class="off"'}><td>${i.photos && i.photos.length ? `<img class="thumb" src="${i.photos[0]}" alt="">` : '<span class="thumb none">bez fotky</span>'}</td><td><b>${esc(i.name)}</b><small>${esc(i.short).slice(0, 80)}${i.short.length > 80 ? '…' : ''}</small></td><td>${esc(catName(i.category))}</td><td>${i.count ?? '—'}</td><td>${p == null ? '<span class="muted">na dotaz</span>' : `${S.fmt(p)} <small>bez DPH</small>`}</td>
@@ -89,14 +91,14 @@
 
   /* ---------------- KATEGORIE ---------------- */
   function catList() {
-    return `<div class="head"><div><h1>Kategorie</h1><p>Kategorie bez strojů na webu se v katalogu nezobrazí.</p></div><button class="btn red" data-act="cat-add">+ Přidat kategorii</button></div>
+    return `<div class="head"><div><p class="section-tag">Půjčovna</p><h1>Kategorie</h1><p>Kategorie bez strojů na webu se v katalogu nezobrazí.</p></div><button class="btn red" data-act="cat-add">+ Přidat kategorii</button></div>
       <div class="table-card"><table class="list"><thead><tr><th>Název</th><th>Úvodní text</th><th>Ikona</th><th>Strojů</th><th></th></tr></thead><tbody>
       ${d.categories.map((c, n) => { const cnt = d.items.filter(i => i.category === c.id).length; return `<tr><td><input data-cat="name" data-n="${n}" value="${esc(c.name)}"></td><td><input data-cat="intro" data-n="${n}" value="${esc(c.intro || '')}"></td><td><select data-cat="icon" data-n="${n}">${Object.entries(ICONS).map(([k, v]) => `<option value="${k}"${c.icon === k ? ' selected' : ''}>${v}</option>`).join('')}</select></td><td>${cnt}</td><td class="actions"><button class="icon-btn" data-act="cat-up" data-n="${n}"${n ? '' : ' disabled'}>▲</button><button class="btn small ghost-red" data-act="cat-del" data-n="${n}"${cnt ? ' disabled title="Kategorie obsahuje stroje"' : ''}>Smazat</button></td></tr>`; }).join('')}
       </tbody></table></div><div class="foot-btns"><button class="btn red" data-act="cat-save">Uložit kategorie</button></div>`;
   }
   /* ---------------- SLUŽBY ---------------- */
   function serviceList() {
-    return `<div class="head"><div><h1>Doplňkové služby</h1><p>Zobrazují se v katalogu a v poptávkovém formuláři. Prázdná cena = „dle dohody“.</p></div><button class="btn red" data-act="sv-add">+ Přidat službu</button></div>
+    return `<div class="head"><div><p class="section-tag">Půjčovna</p><h1>Doplňkové služby</h1><p>Zobrazují se v katalogu a v poptávkovém formuláři. Prázdná cena = „dle dohody“.</p></div><button class="btn red" data-act="sv-add">+ Přidat službu</button></div>
       <div class="table-card"><table class="list"><thead><tr><th>Služba</th><th>Cena bez DPH</th><th>Jednotka</th><th></th></tr></thead><tbody>
       ${d.services.map((s, n) => `<tr><td><input data-sv="name" data-n="${n}" value="${esc(s.name)}"></td><td><input data-sv="price" data-n="${n}" inputmode="decimal" value="${s.price ?? ''}" placeholder="dle dohody"></td><td><input data-sv="unit" data-n="${n}" value="${esc(s.unit || '')}" placeholder="např. km"></td><td class="actions"><button class="btn small ghost-red" data-act="sv-del" data-n="${n}">Smazat</button></td></tr>`).join('')}
       </tbody></table></div><div class="foot-btns"><button class="btn red" data-act="sv-save">Uložit služby</button></div>`;
@@ -105,15 +107,63 @@
   function inqList() {
     const all = S.inquiries(), list = all.filter(q => !inqFilter || q.status === inqFilter);
     const date = s => s ? new Date(s).toLocaleDateString('cs-CZ') : '';
-    return `<div class="head"><div><h1>Poptávky</h1><p>${all.length} celkem · nových ${all.filter(q => q.status === 'nova').length}</p></div><select id="inq-f"><option value="">Všechny stavy</option>${Object.entries(STATUS).map(([k, v]) => `<option value="${k}"${inqFilter === k ? ' selected' : ''}>${v}</option>`).join('')}</select></div>
+    return `<div class="head"><div><p class="section-tag">Půjčovna a havárie</p><h1>Poptávky</h1><p>${all.length} celkem · nových ${all.filter(q => q.status === 'nova').length}</p></div><select id="inq-f"><option value="">Všechny stavy</option>${Object.entries(STATUS).map(([k, v]) => `<option value="${k}"${inqFilter === k ? ' selected' : ''}>${v}</option>`).join('')}</select></div>
       ${list.length ? list.map(q => `<article class="inq card st-${q.status}"><header><div><span class="badge st-${q.status}">${STATUS[q.status]}</span><h2>${esc(q.itemName)}</h2><small>${new Date(q.createdAt).toLocaleString('cs-CZ')} · ${esc(q.id)}</small></div><div class="inq-ctl"><select data-act="inq-st" data-id="${q.id}">${Object.entries(STATUS).map(([k, v]) => `<option value="${k}"${q.status === k ? ' selected' : ''}>${v}</option>`).join('')}</select><button class="btn small ghost-red" data-act="inq-del" data-id="${q.id}">Smazat</button></div></header>
-        <dl><div><dt>Termín</dt><dd>${date(q.from)} – ${date(q.to)} (${q.days} dní) · ${q.count} ks</dd></div><div><dt>Převzetí</dt><dd>${esc(q.delivery)}${q.address ? ` – ${esc(q.address)}` : ''}</dd></div>${q.services && q.services.length ? `<div><dt>Služby</dt><dd>${q.services.map(esc).join(', ')}</dd></div>` : ''}<div><dt>Kontakt</dt><dd>${esc(q.name)} · <a href="tel:${esc(q.phone)}">${esc(q.phone)}</a>${q.email ? ` · <a href="mailto:${esc(q.email)}">${esc(q.email)}</a>` : ''}${q.company ? ` · ${esc(q.company)}` : ''}</dd></div>${q.note ? `<div><dt>Poznámka</dt><dd>${esc(q.note)}</dd></div>` : ''}</dl></article>`).join('') : '<div class="card empty">Zatím žádné poptávky.</div>'}`;
+        <dl>${q.type === 'havarie' ? `<div><dt>Adresa</dt><dd>${esc(q.address)}</dd></div><div><dt>Co se stalo</dt><dd>${esc(q.desc)}</dd></div>${q.claim ? `<div><dt>Škodní událost</dt><dd>${esc(q.claim)}</dd></div>` : ''}${q.photos && q.photos.length ? `<div><dt>Fotky</dt><dd>${q.photos.length} (v testovacím režimu se neukládají)</dd></div>` : ''}<div><dt>Hotové kroky</dt><dd>${(q.steps || []).map(esc).join('<br>')}</dd></div>` : `<div><dt>Termín</dt><dd>${date(q.from)} – ${date(q.to)} (${q.days} dní) · ${q.count} ks</dd></div>`}${q.type === 'havarie' ? '' : `<div><dt>Převzetí</dt><dd>${esc(q.delivery)}${q.address ? ` – ${esc(q.address)}` : ''}</dd></div>`}${q.services && q.services.length ? `<div><dt>Služby</dt><dd>${q.services.map(esc).join(', ')}</dd></div>` : ''}<div><dt>Kontakt</dt><dd>${esc(q.name)} · <a href="tel:${esc(q.phone)}">${esc(q.phone)}</a>${q.email ? ` · <a href="mailto:${esc(q.email)}">${esc(q.email)}</a>` : ''}${q.company ? ` · ${esc(q.company)}` : ''}</dd></div>${q.note ? `<div><dt>Poznámka</dt><dd>${esc(q.note)}</dd></div>` : ''}</dl></article>`).join('') : '<div class="card empty">Zatím žádné poptávky.</div>'}`;
   }
   /* ---------------- NASTAVENÍ ---------------- */
+  /* ---------------- PORADNA: ČLÁNKY ---------------- */
+  const porCat = id => (por.categories.find(c => c.id === id) || {}).name || '—';
+  function artList() {
+    return `<div class="head"><div><p class="section-tag">Poradna</p><h1>Články</h1><p>${por.articles.length} článků · zveřejněno ${por.articles.filter(a => a.published).length}</p></div><button class="btn red" data-act="art-new">+ Přidat článek</button></div>
+      <div class="table-card"><table class="list"><thead><tr><th></th><th>Článek</th><th>Téma</th><th>Datum</th><th>Na webu</th><th></th></tr></thead><tbody>
+      ${por.articles.map((a, n) => `<tr${a.published ? '' : ' class="off"'}><td>${a.photo ? `<img class="thumb" src="${a.photo}" alt="">` : '<span class="thumb none">bez fotky</span>'}</td><td><b>${esc(a.title)}</b><small>${esc(a.perex).slice(0, 90)}</small></td><td>${esc(porCat(a.category))}</td><td>${a.date ? new Date(a.date).toLocaleDateString('cs-CZ') : '—'}</td>
+        <td><label class="switch"><input type="checkbox" data-act="art-toggle" data-n="${n}"${a.published ? ' checked' : ''}><span></span></label></td>
+        <td class="actions"><button class="icon-btn" data-act="art-up" data-n="${n}"${n ? '' : ' disabled'}>▲</button><button class="icon-btn" data-act="art-down" data-n="${n}"${n < por.articles.length - 1 ? '' : ' disabled'}>▼</button><button class="btn small" data-act="art-edit" data-n="${n}">Upravit</button><button class="btn small ghost-red" data-act="art-del" data-n="${n}">Smazat</button></td></tr>`).join('') || '<tr><td colspan="6" class="empty">Zatím žádné články.</td></tr>'}
+      </tbody></table></div><p class="hint">Pořadí v seznamu = pořadí na webu. Skrytý článek se na webu nezobrazí.</p>`;
+  }
+  function artForm() {
+    const a = editingArt;
+    return `<div class="head"><div><button class="back" data-act="art-cancel">← Zpět na články</button><p class="section-tag">Poradna</p><h1>${a.id ? 'Upravit článek' : 'Nový článek'}</h1></div><div class="head-btns">${a.id && a.published ? `<a class="btn ghost" href="page.html?view=clanek&id=${encodeURIComponent(a.id)}" target="_blank" rel="noopener">Náhled na webu ↗</a>` : ''}<button class="btn red" data-act="art-save">Uložit článek</button></div></div>
+    <form id="art-form" class="form-grid" novalidate>
+     <section class="card"><h2>Článek</h2>
+      <label class="field wide">Nadpis *<input name="title" required maxlength="140" value="${esc(a.title)}"></label>
+      <label class="field">Téma<select name="category">${por.categories.map(c => `<option value="${c.id}"${c.id === a.category ? ' selected' : ''}>${esc(c.name)}</option>`).join('')}</select></label>
+      <label class="field">Datum<input type="date" name="date" value="${esc(a.date || '')}"></label>
+      <label class="field check"><input type="checkbox" name="published"${a.published ? ' checked' : ''}> Zveřejnit na webu</label>
+      <label class="field wide">Krátký úvod (pod nadpisem)<textarea name="perex" rows="2" maxlength="260">${esc(a.perex)}</textarea></label>
+     </section>
+     <section class="card"><h2>Co udělat hned</h2><p class="hint">Zobrazí se rovnou na kartě článku – každý bod na nový řádek, nejvýše 5 bodů, krátce.</p>
+      <textarea name="steps" rows="6" class="big-area" placeholder="Zastavte přívod vody&#10;Zajistěte bezpečí&#10;Zavolejte HAVARIX">${esc((a.steps || []).join('\n'))}</textarea>
+     </section>
+     <section class="card"><h2>Fotografie</h2><p class="hint">Jedna fotka k článku, automaticky se zmenší.</p>
+      <div class="photos">${a.photo ? `<figure><img src="${a.photo}" alt=""><figcaption><span class="main-tag">Fotka</span><button type="button" class="icon-btn" data-act="art-ph-del" title="Odebrat">✕</button></figcaption></figure>` : ''}<label class="photo-add"><input type="file" accept="image/*" id="art-ph-input"><span>${a.photo ? 'Vyměnit fotku' : '+ Přidat fotku'}</span></label></div>
+     </section>
+     <section class="card wide-card"><h2>Text článku</h2><p class="hint">Odstavce oddělte prázdným řádkem. Řádek začínající <b>## </b> je podnadpis, řádek začínající <b>- </b> je odrážka.</p>
+      <textarea name="body" rows="16" class="big-area">${esc(a.body)}</textarea>
+     </section>
+    </form>`;
+  }
+  function readArt() {
+    const f = document.getElementById('art-form'); if (!f) return;
+    const a = editingArt;
+    a.title = f.title.value.trim(); a.category = f.category.value; a.date = f.date.value; a.published = f.published.checked;
+    a.perex = f.perex.value.trim(); a.body = f.body.value.replace(/\r/g, '').trim();
+    a.steps = f.steps.value.split('\n').map(t => t.trim()).filter(Boolean).slice(0, 5);
+  }
+  function saveArt() {
+    readArt(); const a = editingArt;
+    if (!a.title) { toast('Vyplňte nadpis článku.', true); document.querySelector('[name=title]').focus(); return; }
+    if (!a.id) { let base = slug(a.title), id = base, n = 2; while (por.articles.some(x => x.id === id)) id = `${base}-${n++}`; a.id = id; por.articles.unshift(a); }
+    else { const k = por.articles.findIndex(x => x.id === a.id); por.articles[k] = a; }
+    persistPor('Článek uložen'); editingArt = null; render();
+  }
+
   function settings() {
     return `<div class="head"><div><h1>Nastavení a záloha</h1></div></div>
       <section class="card"><h2>DPH</h2><label class="field">Sazba DPH (%)<input id="vat" inputmode="decimal" value="${d.vatRate}"></label><button class="btn red" data-act="vat-save">Uložit</button></section>
       <section class="card"><h2>Záloha dat</h2><p class="hint">Stáhne všechny stroje, kategorie, služby a poptávky do jednoho souboru. Ze souboru je lze zase obnovit.</p><div class="foot-btns left"><button class="btn" data-act="export">Stáhnout zálohu</button><label class="btn ghost">Obnovit ze zálohy<input type="file" accept="application/json,.json" id="import" hidden></label></div></section>
+      <section class="card danger"><h2>Výchozí články poradny</h2><p class="hint">Vrátí články poradny do původní podoby. Vaše úpravy článků budou ztraceny.</p><button class="btn ghost-red" data-act="art-reset">Obnovit výchozí články</button></section>
       <section class="card danger"><h2>Výchozí stav</h2><p class="hint">Vrátí katalog do původní podoby (stroje od klienta). Poptávky zůstanou zachovány.</p><button class="btn ghost-red" data-act="reset">Obnovit výchozí katalog</button></section>`;
   }
 
@@ -130,12 +180,14 @@
     main.querySelectorAll('[data-pr="price"]').forEach(inp => inp.addEventListener('input', () => { const v = num(inp.value); document.getElementById('vat-' + inp.dataset.n).textContent = v == null ? '—' : S.fmt(S.withVat(v, d)); }));
     if (q('import')) q('import').addEventListener('change', e => {
       const f = e.target.files[0]; if (!f) return; const r = new FileReader();
-      r.onload = () => { try { const j = JSON.parse(r.result); if (!j.data || !Array.isArray(j.data.items)) throw 0; if (!confirm('Opravdu nahradit současná data zálohou?')) return; d = j.data; persist('Data obnovena ze zálohy'); if (Array.isArray(j.inquiries)) S.saveInquiries(j.inquiries); render(); } catch { toast('Soubor není platná záloha HAVARIX.', true); } };
+      r.onload = () => { try { const j = JSON.parse(r.result); if (!j.data || !Array.isArray(j.data.items)) throw 0; if (!confirm('Opravdu nahradit současná data zálohou?')) return; d = j.data; persist('Data obnovena ze zálohy'); if (j.poradna && Array.isArray(j.poradna.articles)) { por = j.poradna; S.savePoradna(por); } if (Array.isArray(j.inquiries)) S.saveInquiries(j.inquiries); render(); } catch { toast('Soubor není platná záloha HAVARIX.', true); } };
       r.readAsText(f);
     });
   }
   main.addEventListener('change', e => {
     const t = e.target;
+    if (t.dataset.act === 'art-toggle') { const a = por.articles[+t.dataset.n]; a.published = t.checked; persistPor(a.published ? 'Článek je na webu' : 'Článek skryt'); render(); return; }
+    if (t.id === 'art-ph-input' && t.files[0]) { readArt(); resize(t.files[0]).then(u => { editingArt.photo = u; toast('Fotka přidána (nezapomeňte uložit)'); render(); }).catch(() => toast('Fotografii se nepodařilo načíst.', true)); return; }
     if (t.dataset.act === 'toggle') { const i = d.items.find(x => x.id === t.dataset.id); i.active = t.checked; persist(i.active ? 'Stroj je na webu' : 'Stroj skryt'); render(); }
     if (t.dataset.act === 'inq-st') { const l = S.inquiries(); l.find(x => x.id === t.dataset.id).status = t.value; S.saveInquiries(l); toast('Stav změněn'); render(); }
   });
@@ -166,7 +218,15 @@
       case 'sv-save': sync(); persist('Služby uloženy'); render(); break;
       case 'inq-del': if (confirm('Opravdu smazat tuto poptávku?')) { S.saveInquiries(S.inquiries().filter(x => x.id !== b.dataset.id)); toast('Poptávka smazána'); render(); } break;
       case 'vat-save': { const v = num(document.getElementById('vat').value); if (v == null || v < 0 || v > 100) { toast('Zadejte platnou sazbu DPH.', true); break; } d.vatRate = v; persist('Sazba DPH uložena'); render(); break; }
-      case 'export': { const blob = new Blob([JSON.stringify({exportedAt: new Date().toISOString(), data: d, inquiries: S.inquiries()}, null, 2)], {type: 'application/json'}); const u = URL.createObjectURL(blob); const l = document.createElement('a'); l.href = u; l.download = `havarix-zaloha-${new Date().toISOString().slice(0, 10)}.json`; document.body.append(l); l.click(); l.remove(); setTimeout(() => URL.revokeObjectURL(u), 1000); break; }
+      case 'art-new': editingArt = {id:'', title:'', category: por.categories[0]?.id || '', date: new Date().toISOString().slice(0, 10), published: false, perex:'', steps:[], body:'', photo:''}; render(); break;
+      case 'art-edit': editingArt = JSON.parse(JSON.stringify(por.articles[n])); render(); break;
+      case 'art-cancel': editingArt = null; render(); break;
+      case 'art-save': saveArt(); break;
+      case 'art-del': if (confirm('Opravdu smazat tento článek? Tuto akci nelze vrátit.')) { por.articles.splice(n, 1); persistPor('Článek smazán'); render(); } break;
+      case 'art-up': case 'art-down': { const j = a === 'art-up' ? n - 1 : n + 1; [por.articles[n], por.articles[j]] = [por.articles[j], por.articles[n]]; persistPor('Pořadí uloženo'); render(); break; }
+      case 'art-ph-del': readArt(); editingArt.photo = ''; render(); break;
+      case 'art-reset': if (confirm('Vrátit články poradny do výchozího stavu?')) { S.resetPoradna(); por = S.getPoradna(); toast('Články obnoveny'); render(); } break;
+      case 'export': { const blob = new Blob([JSON.stringify({exportedAt: new Date().toISOString(), data: d, poradna: por, inquiries: S.inquiries()}, null, 2)], {type: 'application/json'}); const u = URL.createObjectURL(blob); const l = document.createElement('a'); l.href = u; l.download = `havarix-zaloha-${new Date().toISOString().slice(0, 10)}.json`; document.body.append(l); l.click(); l.remove(); setTimeout(() => URL.revokeObjectURL(u), 1000); break; }
       case 'reset': if (confirm('Vrátit katalog do výchozího stavu? Vaše úpravy strojů budou ztraceny.')) { S.reset(); d = S.get(); toast('Katalog obnoven'); render(); } break;
     }
   });

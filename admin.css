@@ -104,3 +104,12 @@ table.rows{width:100%;border-collapse:collapse;margin-bottom:10px}
 @media(max-width:520px){.form-grid .card:first-child{grid-template-columns:1fr}.inq dl div{grid-template-columns:1fr;gap:2px}.adm-top{padding:0 14px}}
 .logo-pill{display:inline-flex;background:#fff;border-radius:6px;padding:5px 10px}
 .logo-pill img{height:34px;width:auto;display:block}
+/* oddíly v menu administrace */
+.nav-group{margin:16px 14px 6px;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#7fa6cc}
+.nav-group:first-child{margin-top:2px}
+.adm-nav .nav-group+button{margin-top:0}
+.adm-nav p.nav-group:not(:first-child){border-top:1px solid #ffffff1f;padding-top:16px}
+.section-tag{display:inline-block;margin:0 0 6px!important;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#fff!important;background:#0a2a52;padding:3px 9px;border-radius:3px}
+.big-area{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:4px;font:inherit;font-size:15px;line-height:1.55;resize:vertical}
+.wide-card{grid-column:1/-1}
+@media(max-width:900px){.nav-group{display:none}}

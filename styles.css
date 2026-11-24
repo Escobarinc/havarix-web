@@ -33,3 +33,70 @@ footer.site-footer{height:70px}
 @media(max-width:1250px){.brand-logo{height:50px}}
 @media(max-width:900px){.brand-logo{height:46px}}
 @media(max-width:520px){.brand-logo{height:40px}}
+/* 6. bod: samostatná kamerová zkouška (oddělená od pěti kroků) */
+.steps{gap:10px}
+.step{width:16.2%}
+.step:nth-last-child(2):after{content:none}
+.step-extra{padding-left:14px;border-left:2px dashed #ffffff66}
+.cam-wrap{display:grid;place-items:center;background:#fff}
+.cam-wrap svg{width:52%;height:52%;fill:none;stroke:#0a2244;stroke-width:1.5;stroke-linejoin:round}
+.step-cam{font-size:24px!important}
+.step-extra .step-copy{box-shadow:0 0 0 2px #e00019 inset}
+@media(min-width:1251px){.step-photo-wrap{width:124px;height:124px}.step-copy h2{font-size:13px}.step-copy p{font-size:9px}.step:not(:last-child):after{top:50px}}
+@media(max-width:900px){.step{width:calc(50% - 15px)}.step-extra{border-left:0;padding-left:0}}
+@media(max-width:520px){.step{width:100%}}
+/* šest bodů: víc místa pro text */
+section#process{height:auto;padding-bottom:16px}
+.step-copy{height:auto!important;min-height:92px;padding:10px 8px 10px 20px!important}
+@media(min-width:1251px){.step-photo-wrap{width:112px;height:112px}.step-copy h2{font-size:12.5px;line-height:1.1}.step-copy p{font-size:10px;line-height:1.25}.step:not(:last-child):after{top:44px}}
+@media(min-width:1251px){.step-copy{min-height:112px}}
+/* oprava: červené tlačítko v hlavičce na mobilu skrýt (je v mobilním menu) */
+@media(max-width:900px){.site-header .top-cta{display:none!important}}
+/* zvýrazněná Půjčovna v menu */
+.desktop-nav a[data-view="pujcovna"]{display:inline-flex;align-items:center;gap:6px;padding:9px 15px;border:1.5px solid #2b9be0;border-radius:999px;background:#eaf4fc;color:#0a2a52;font-weight:700;line-height:1}
+.desktop-nav a[data-view="pujcovna"]::before{content:"";width:8px;height:8px;border-radius:50%;background:#e00019}
+.desktop-nav a[data-view="pujcovna"]:hover{background:#0a2a52;border-color:#0a2a52;color:#fff}
+.desktop-nav a[data-view="pujcovna"].active{background:#0a2a52;border-color:#0a2a52;color:#fff;border-bottom-width:1.5px}
+.mobile-nav a[href="page.html?view=pujcovna"]{font-weight:700;color:#0a2a52;background:#eaf4fc;border-left:4px solid #2b9be0;border-radius:4px}
+.inner-page .desktop-nav a[data-view="pujcovna"].active{border-bottom:1.5px solid #0a2a52}
+.desktop-nav a[data-view="pujcovna"]{white-space:nowrap}
+/* užší obrazovky: menu pod tlačítko (dlouhá položka Půjčovna se jinak nevejde) */
+@media(max-width:1180px){
+ .desktop-nav,.site-header .top-cta{display:none!important}
+ .menu-toggle{display:flex!important;flex-direction:column;gap:5px;border:0;background:none;padding:12px;margin-left:auto}
+ .menu-toggle span{width:27px;height:3px;background:#06264a;border-radius:3px}
+ .mobile-nav:not([hidden]){display:flex!important;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:#fff;padding:15px 22px;box-shadow:0 9px 20px #0003;z-index:30}
+ .mobile-nav a{text-align:left;text-decoration:none;padding:13px 5px;color:var(--navy)}
+}
+/* šest bodů na středních obrazovkách: 2 řádky po 3 */
+@media(max-width:1250px) and (min-width:901px){
+ .steps{flex-wrap:wrap;justify-content:center;gap:18px 14px;padding:16px 20px}
+ .step{width:31%}
+ .step:after{display:none!important}
+ .step-extra{border-left:0;padding-left:0}
+ .step-photo-wrap{width:110px!important;height:110px!important}
+ .step-copy{min-height:96px}
+ .step-copy h2{font-size:13px!important}
+ .step-copy p{font-size:10.5px!important;line-height:1.25}
+}
+/* O nás na úvodní stránce (pod pěti kroky, nezakrývá fotku) */
+.about{background:#061f45;color:#fff;border-top:1px solid #ffffff1f}
+.about-inner{max-width:1260px;margin:0 auto;padding:44px 35px;display:grid;grid-template-columns:1.15fr 1fr;gap:44px;align-items:center}
+.about-kicker{margin:0 0 8px;font-size:12px;font-weight:800;letter-spacing:4px;color:#5cc0ff}
+.about-text h2{margin:0 0 12px;font-size:clamp(24px,2.4vw,32px);line-height:1.15}
+.about-text p{margin:0 0 16px;font-size:16px;line-height:1.6;color:#dbe8f5;max-width:620px}
+.about-link{color:#fff;font-weight:700;text-decoration:none;border-bottom:2px solid #e00019;padding-bottom:2px}
+.about-link:hover{color:#5cc0ff}
+.about-facts{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.about-facts li{display:flex;gap:14px;align-items:center;background:#0b2f5c;border:1px solid #ffffff1f;border-radius:10px;padding:14px 18px}
+.about-facts svg{width:34px;height:34px;flex:none;fill:none;stroke:#5cc0ff;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.about-facts span{font-size:14px;line-height:1.4;color:#cfe0f0}
+.about-facts b{display:block;color:#fff;font-size:16px}
+@media(max-width:900px){.about-inner{grid-template-columns:1fr;gap:24px;padding:34px 20px}}
+/* telefon na úvodní stránce a v mobilním menu */
+.hero-actions{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.hero-phone{display:inline-flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:800;font-size:22px;line-height:1}
+.hero-phone svg{width:40px;height:40px;padding:9px;border-radius:50%;background:#ffffff1f;border:1.5px solid #ffffff66;fill:none;stroke:#fff;stroke-width:1.8;stroke-linejoin:round}
+.hero-phone small{display:block;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#a7d9ff;margin-bottom:3px}
+.hero-phone:hover svg{background:#e00019;border-color:#e00019}
+.mobile-nav .mobile-tel{margin-top:8px;border:2px solid #0a2a52;color:#0a2a52!important;border-radius:8px;text-align:center!important;font-weight:800}

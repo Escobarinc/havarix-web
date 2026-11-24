@@ -13,6 +13,14 @@ window.HavarixStore = (() => {
   }
   const save = d => write(DATA_KEY, d);
   const reset = () => { try { localStorage.removeItem(DATA_KEY); } catch (e) {} };
+  /* Poradna – články (stejný testovací režim) */
+  const POR_KEY = 'havarix-poradna-v1';
+  function getPoradna() {
+    const d = read(POR_KEY, null);
+    return d && window.HAVARIX_PORADNA_DEFAULT && d.version === window.HAVARIX_PORADNA_DEFAULT.version ? d : clone(window.HAVARIX_PORADNA_DEFAULT || {categories: [], articles: []});
+  }
+  const savePoradna = d => write(POR_KEY, d);
+  const resetPoradna = () => { try { localStorage.removeItem(POR_KEY); } catch (e) {} };
   const inquiries = () => read(INQ_KEY, []);
   const saveInquiries = list => write(INQ_KEY, list);
   function addInquiry(i) {
@@ -28,5 +36,5 @@ window.HavarixStore = (() => {
   const fromPrice = item => { const p = (item.prices || []).map(t => t.price).filter(v => v != null); return p.length ? Math.min(...p) : null; };
   const tierLabel = t => t.to == null ? `${t.from} a více dní` : `${t.from}–${t.to} dní`;
 
-  return {get, save, reset, inquiries, saveInquiries, addInquiry, withVat, fmt, tierFor, fromPrice, tierLabel};
+  return {get, save, reset, getPoradna, savePoradna, resetPoradna, inquiries, saveInquiries, addInquiry, withVat, fmt, tierFor, fromPrice, tierLabel};
 })();

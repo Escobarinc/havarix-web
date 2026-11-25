@@ -100,3 +100,12 @@ section#process{height:auto;padding-bottom:16px}
 .hero-phone small{display:block;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#a7d9ff;margin-bottom:3px}
 .hero-phone:hover svg{background:#e00019;border-color:#e00019}
 .mobile-nav .mobile-tel{margin-top:8px;border:2px solid #0a2a52;color:#0a2a52!important;border-radius:8px;text-align:center!important;font-weight:800}
+/* denní úvodní fotka: dům v řezu vpravo, text vlevo na tmavém přechodu */
+.hero-picture.hero-day{left:auto!important;right:0;width:74%!important;object-position:62% 45%!important}
+section#hero:has(.hero-day) .hero-shade{background:linear-gradient(90deg,#061f45 0%,#061f45 26%,#061f45e6 34%,#061f4599 44%,#061f4500 60%)!important}
+@media(max-width:900px){.hero-picture.hero-day{width:100%!important;object-position:78% 50%!important}section#hero:has(.hero-day) .hero-shade{background:linear-gradient(90deg,#061f45f2 0%,#061f45d9 45%,#061f4566 100%)!important}}
+.hero-picture.hero-day{object-position:62% 18%!important}@media(max-width:900px){.hero-picture.hero-day{object-position:78% 40%!important}}
+@media(max-width:900px){.hero-picture.hero-day{object-position:67% 40%!important}}
+/* šest kroků v řadě – šipky mezi všemi, bez oddělené položky */
+.step:nth-last-child(2):after{content:'➜'}
+.step-photo-kamera{object-fit:cover;background:#fff}

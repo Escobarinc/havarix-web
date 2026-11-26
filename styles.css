@@ -109,3 +109,89 @@ section#hero:has(.hero-day) .hero-shade{background:linear-gradient(90deg,#061f45
 /* šest kroků v řadě – šipky mezi všemi, bez oddělené položky */
 .step:nth-last-child(2):after{content:'➜'}
 .step-photo-kamera{object-fit:cover;background:#fff}
+/* ===== Ověřená odbornost: certifikát + razítko + ověření ===== */
+.trust-band{background:linear-gradient(180deg,#eef5fb,#ffffff);color:#0a2244;padding:56px max(20px,calc((100% - 1260px)/2))}
+.page-section+.trust-band,.trust-band{border-top:1px solid #d5e2ec}
+.trust{display:grid;grid-template-columns:420px 1fr;gap:56px;align-items:center;max-width:1260px;margin:0 auto}
+.trust-media{position:relative;padding:0 40px 40px 0}
+.trust-cert{display:block;position:relative;background:#fff;border-radius:6px;box-shadow:0 18px 44px #0a224433,0 0 0 1px #d5e2ec;transform:rotate(-2deg);transition:transform .25s}
+.trust-cert:hover{transform:rotate(0) scale(1.02)}
+.trust-cert img{display:block;width:100%;height:auto;border-radius:6px}
+.trust-zoom{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);background:#0a2a52;color:#fff;font-size:13px;font-weight:700;padding:7px 14px;border-radius:999px;white-space:nowrap;opacity:0;transition:opacity .2s}
+.trust-cert:hover .trust-zoom,.trust-cert:focus-visible .trust-zoom{opacity:1}
+.trust-stamp{position:absolute;right:0;bottom:0;width:190px;height:190px;transform:rotate(-10deg);filter:drop-shadow(0 4px 8px #0a224422);pointer-events:none}
+.trust-kicker{margin:0 0 10px;font-size:13px;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:#e00019}
+.trust-text h2{margin:0 0 14px;font-size:clamp(26px,2.8vw,38px);line-height:1.12;color:#0a2244}
+.trust-text>p{margin:0 0 20px;font-size:17px;line-height:1.6;color:#2f465d;max-width:640px}
+.trust-facts{margin:0 0 24px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.trust-facts div{background:#fff;border:1px solid #d5e2ec;border-left:4px solid #2b9be0;border-radius:8px;padding:12px 16px}
+.trust-facts dt{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#6a7f93;margin-bottom:3px}
+.trust-facts dd{margin:0;font-size:17px;font-weight:800;color:#0a2244}
+.trust-actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:10px}
+.trust-verify{display:inline-flex;align-items:center;gap:8px;background:#e00019;color:#fff;text-decoration:none;font-weight:800;padding:14px 22px;border-radius:8px;box-shadow:0 4px 12px #e0001933}
+.trust-verify:hover{background:#bb0015}
+.trust-show{display:inline-flex;align-items:center;background:#fff;color:#0a2a52;text-decoration:none;font-weight:800;padding:13px 20px;border-radius:8px;border:2px solid #0a2a52}
+.trust-show:hover{background:#0a2a52;color:#fff}
+.trust-note{margin:0;font-size:13px;color:#6a7f93}
+.lightbox{border:0;padding:0;background:transparent;max-width:min(92vw,820px);max-height:94vh}
+.lightbox::backdrop{background:#001a36e6}
+.lightbox img{display:block;max-width:100%;max-height:90vh;border-radius:6px;box-shadow:0 20px 60px #0008}
+.lightbox-close{position:fixed;top:14px;right:18px;width:46px;height:46px;border-radius:50%;border:0;background:#fff;color:#0a2244;font-size:30px;line-height:1;cursor:pointer}
+@media(max-width:900px){.trust{grid-template-columns:1fr;gap:30px}.trust-media{max-width:360px;margin:0 auto;padding:0 30px 30px 0}.trust-stamp{width:140px;height:140px}.trust-facts{grid-template-columns:1fr}}
+/* certifikát a razítko rovně (bez natočení) */
+.trust-cert{transform:none}
+.trust-cert:hover{transform:scale(1.02)}
+.trust-stamp{transform:none}
+/* úvod: fasáda (vlevo poškozená, vpravo opravená) – celý dům vidět vpravo od textu */
+.hero-picture.hero-fasada{width:70%!important;object-position:50% 32%!important}
+section#hero:has(.hero-fasada) .hero-shade{background:linear-gradient(90deg,#061f45 0%,#061f45 29%,#061f45cc 33%,#061f4555 38%,#061f4500 44%)!important}
+@media(max-width:900px){.hero-picture.hero-fasada{width:100%!important;object-position:48% 40%!important}section#hero:has(.hero-fasada) .hero-shade{background:linear-gradient(90deg,#061f45f0 0%,#061f45cc 50%,#061f4566 100%)!important}}
+/* razítko autorizace v úvodní fotce */
+.hero-stamp{position:absolute;right:4%;bottom:7%;z-index:2;display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none}
+.hero-stamp img{width:172px;height:172px;border-radius:50%;background:radial-gradient(circle,#ffffffe6 0%,#ffffffcc 58%,#ffffff00 71%);transform:rotate(-8deg);filter:drop-shadow(0 6px 14px #00000040);transition:transform .25s}
+.hero-stamp span{background:#0a2a52;color:#fff;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:999px;box-shadow:0 4px 10px #0004}
+.hero-stamp:hover img{transform:rotate(0) scale(1.05)}
+@media(min-width:1600px){.hero-stamp img{width:150px;height:150px}}
+@media(max-width:900px){.hero-stamp{right:14px;bottom:14px}.hero-stamp img{width:104px;height:104px}.hero-stamp span{font-size:10px;padding:4px 9px}}
+/* razítko průhledné – bez bílého podkladu, jako otisk na fotce */
+.hero-stamp img{background:none!important;filter:drop-shadow(0 0 1px #ffffff99)!important;opacity:.92}
+/* razítko výraznější + červený štítek */
+.hero-stamp img{width:196px!important;height:196px!important;opacity:1!important;filter:saturate(1.6) contrast(1.25) drop-shadow(0 0 1.5px #fff) drop-shadow(0 0 3px #ffffffcc) drop-shadow(0 6px 12px #00000055)!important}
+.hero-stamp span{background:#e00019!important;font-size:13px;padding:6px 14px;box-shadow:0 4px 12px #e0001955}
+@media(min-width:1600px){.hero-stamp img{width:170px!important;height:170px!important}}
+@media(max-width:900px){.hero-stamp img{width:118px!important;height:118px!important}.hero-stamp span{font-size:10px;padding:4px 10px}}
+/* úvodní fotka fasády celá (bez ořezu) na běžném počítači */
+@media(min-width:1251px){
+ .hero-picture.hero-fasada{width:auto!important;height:100%!important;left:auto!important;right:0;object-fit:contain!important;object-position:right center!important}
+ section#hero:has(.hero-fasada) .hero-shade{background:linear-gradient(90deg,#061f45 0%,#061f45 calc(100% - 445px*1.777 + 10px),#061f45cc calc(100% - 445px*1.777 + 40px),#061f4500 calc(100% - 445px*1.777 + 140px))!important}
+ .hero-stamp{right:2.5%}
+}
+@media(min-width:1251px){.hero-stamp{right:1.5%;bottom:4%}.hero-stamp img{width:140px!important;height:140px!important}.hero-stamp span{font-size:11px;padding:5px 11px}}
+/* střední notebooky 1181–1400 px: užší menu, text úvodu odsazený od okraje */
+@media(max-width:1400px){
+ .header-inner{padding:0 28px}
+ .desktop-nav{gap:16px}
+ .desktop-nav a,.nav-text{font-size:12.5px}
+ .desktop-nav a[data-view="pujcovna"]{padding:8px 12px}
+ .top-cta{padding:0 13px;font-size:11.5px}
+ .hero-content{padding-left:40px}
+}
+/* jednotná velikost na širokých monitorech: úvod i podstránky zvětšené stejně (1.28) */
+@media(min-width:1600px){
+ body.inner-page{zoom:1.28!important}
+ .header-inner{padding:0 28px}
+ .desktop-nav{gap:16px}
+ .desktop-nav a,.nav-text{font-size:12.5px}
+ .desktop-nav a[data-view="pujcovna"]{padding:8px 12px}
+ .top-cta{padding:0 13px;font-size:11.5px}
+}
+/* podstránky na širokém monitoru: obsah v normální velikosti, hlavička stejná jako na úvodu */
+@media(min-width:1600px){
+ body.inner-page{zoom:1!important}
+ body.inner-page .site-header{zoom:1.28}
+}
+/* podstránky na širokém monitoru: obsah o 15 % větší (vyplní šířku), hlavička stejná jako na úvodu (1.15 × 1.113 ≈ 1.28) */
+@media(min-width:1600px){
+ body.inner-page{zoom:1.15!important}
+ body.inner-page .site-header{zoom:1.113}
+}

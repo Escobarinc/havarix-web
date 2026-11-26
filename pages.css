@@ -466,3 +466,15 @@ fieldset.form-field legend{font-weight:800;font-size:14px;margin-bottom:8px}
 @media(max-width:700px){.sos-bar{flex-wrap:wrap}.sos-tel{margin-left:0}}
 .wizard-option:disabled{cursor:default;opacity:1}
 .process-line::before{left:7%;right:7%}
+/* Naše služby: denní fotka domu s technikou */
+.hero-photo-day>img{width:62%;object-position:70% 45%}
+.hero-photo-day::after{background:linear-gradient(90deg,#061f45 0%,#061f45 37%,#061f45cc 42%,#061f4555 48%,#061f4500 56%)}
+@media(max-width:700px){.hero-photo-day>img{object-position:72% 50%}.hero-photo-day::after{background:linear-gradient(0deg,#061f45 0%,#061f45dd 55%,#061f4540 100%)}}
+.hero-proc-day>img{object-position:78% 40%}
+/* karty zasahující do úvodu: fotka dole plynule přejde do modré (žádný useknutý okraj mezi kartami) */
+.page-hero:has(+ .overlap){background:#061f45}
+.page-hero:has(+ .overlap)>img{-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 calc(100% - 230px),transparent calc(100% - 70px));mask-image:linear-gradient(to bottom,#000 0%,#000 calc(100% - 230px),transparent calc(100% - 70px))}
+/* fotka kamery v kruhu místo ikony */
+.cam-photo{overflow:visible}
+.cam-photo img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
+.hero-poradna-day>img{object-position:72% 35%}

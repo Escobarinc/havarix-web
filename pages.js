@@ -93,7 +93,13 @@ function callout(title = 'Nevíte, kde začít?', text = 'Krátký průvodce vá
 }
 
 function certBlock() {
-  return `<section class="page-section dark"><div class="cert-block"><div class="cert-stamp">${ic('stamp')}<span>Autorizovaná<br>osoba</span></div><div class="cert-text"><p class="cam-kicker">Certifikát a razítko</p><h2>Protokol s razítkem autorizované osoby</h2><p>Záznam stavu a výsledky měření vydáváme jako protokol podepsaný a orazítkovaný autorizovanou osobou pro sanace zděných staveb proti vlhkosti. Pro pojišťovnu i asistenci je to důvěryhodný podklad, se kterým se špatně polemizuje.</p><ul class="cert-list"><li>${ic('shield')}<span><b>Certifikát o autorizaci</b>Vědeckotechnická společnost pro sanace staveb a péči o památky (WTA)</span></li><li>${ic('stamp')}<span><b>Razítko a podpis</b>na každém protokolu z diagnostiky</span></li></ul></div></div></section>`;
+  return `<section class="trust-band"><div class="trust">
+    <div class="trust-media"><a class="trust-cert" href="assets/autorizace/certifikat-wta-00044.jpg" data-lightbox aria-label="Zobrazit certifikát o autorizaci v plné velikosti"><img src="assets/autorizace/certifikat-wta-00044-nahled.jpg" width="520" height="735" alt="Certifikát o autorizaci WTA CZ č. 00044 – Mgr. Lukáš Pečenka, DiS." loading="lazy"><span class="trust-zoom">Zobrazit certifikát</span></a><img class="trust-stamp" src="assets/autorizace/razitko-wta-00044.webp" width="620" height="620" alt="Autorizační razítko WTA CZ č. 00044" loading="lazy"></div>
+    <div class="trust-text"><p class="trust-kicker">Ověřená odbornost</p><h2>Autorizovaný odborník WTA CZ pro sanace zděných staveb proti vlhkosti</h2><p>Mgr. Lukáš Pečenka, DiS., je jedním z mála autorizovaných odborníků Vědeckotechnické společnosti pro sanace staveb a péči o památky (WTA CZ). Autorizace je zapsaná ve veřejném seznamu – ověřit si ji může každý.</p>
+     <dl class="trust-facts"><div><dt>Číslo autorizace</dt><dd>00044</dd></div><div><dt>Platnost</dt><dd>do 31. 12. 2028</dd></div><div><dt>Obor</dt><dd>Sanace zděných staveb proti vlhkosti</dd></div><div><dt>Razítko</dt><dd>Oprávnění užívat autorizační razítko WTA CZ</dd></div></dl>
+     <div class="trust-actions"><a class="trust-verify" href="https://www.wta-international.org/fileadmin/user_upload/WTA-CZ/Z_2026_05_28_Seznam_osob_s_udelenou_autorizaci_pro_ZDIVO_28.5.2026.pdf" target="_blank" rel="noopener">Ověřte si nás v seznamu WTA CZ ↗</a><a class="trust-show" href="assets/autorizace/certifikat-wta-00044.jpg" data-lightbox>Zobrazit certifikát</a></div>
+     <p class="trust-note">Oficiální seznam osob s udělenou autorizací vede WTA CZ (PDF). Hledejte číslo 00044.</p></div>
+   </div></section>`;
 }
 function insuranceBox() {
   return `<section class="page-section alt"><div class="ins-box"><span class="ins-badge">${ic('fileCheck')}Důležité kvůli pojišťovně</span><h2>Nejdříve zaznamenejme stav (udělejme diagnostiku)</h2><p class="ins-lead">Aby pojišťovna havárii proplatila bez komplikací, nahlaste ji nejdřív na asistenční linku a řekněte, že jako realizační firmu chcete HAVARIX. Nechte si to potvrdit.</p>
@@ -105,7 +111,7 @@ function insuranceBox() {
 /* ---------- jednotlivé stránky ---------- */
 const PAGES = {
   sluzby: {name:'Naše služby', render: () =>
-    hero({photo:'hero-sluzby', kicker:'NAŠE SLUŽBY', title:'Vrátíme váš domov<br>do pořádku.', lead:'Kompletní obnova domů a bytů po vytopení – od zjištění rozsahu škod přes vysoušení až po sanaci, opravy a vyřízení s pojišťovnou. Rychle, odborně a s jasným plánem.', cta:'Potřebuji pomoc', href:'page.html?view=pruvodce'}) +
+    hero({photo:'hero_sluzby_dum', cls:'hero-photo-day', kicker:'NAŠE SLUŽBY', title:'Vrátíme váš domov<br>do pořádku.', lead:'Kompletní obnova domů a bytů po vytopení – od zjištění rozsahu škod přes vysoušení až po sanaci, opravy a vyřízení s pojišťovnou. Rychle, odborně a s jasným plánem.', cta:'Potřebuji pomoc', href:'page.html?view=pruvodce'}) +
     `<section class="page-section dark overlap" id="page-details">${photoCards(SERVICES, 'four')}</section>` + callout()},
 
   postup: {name:'Jak postupujeme', render: () =>
@@ -114,7 +120,7 @@ const PAGES = {
     `<section class="page-section dark split-photo"><div class="split-text"><h2>Co v každém kroku zařídíme?</h2>${checklist(['Rychlý výjezd a odborné posouzení rozsahu škod', 'Kamerovou prohlídku kanalizace a potrubí', 'Kompletní fotodokumentaci a podklady pro pojišťovnu', 'Přesný rozpočet a plán obnovy', 'Profesionální vysoušení, odvlhčení a sanaci konstrukcí', 'Komunikaci s pojišťovnou až do finálního uzavření škody'])}<a class="primary-link" href="page.html?view=havarie">Začít řešit havárii ${arrow}</a></div><img src="${IMG}hero-postup.jpg" alt="Vysoušeče HAVARIX v zasažené místnosti" loading="lazy"></section>`},
 
   proc: {name:'Proč HAVARIX', render: () =>
-    hero({photo:'hero-proc', kicker:'PROČ HAVARIX', title:'Jeden partner.<br>Kompletní řešení.', lead:'Od prvního zásahu po finální obnovu – vysušíme, vyčistíme, sanujeme a vrátíme váš domov do bezpečného a plně obyvatelného stavu.'}) +
+    hero({photo:'hero_proc_dum', cls:'hero-photo-day hero-proc-day', kicker:'PROČ HAVARIX', title:'Jeden partner.<br>Kompletní řešení.', lead:'Od prvního zásahu po finální obnovu – vysušíme, vyčistíme, sanujeme a vrátíme váš domov do bezpečného a plně obyvatelného stavu.'}) +
     `<section class="page-section dark" id="page-details">${iconCards([
       ['clock', 'Rychlá reakce', 'Jsme připraveni zasáhnout okamžitě a omezit tak další škody na vašem majetku.'],
       ['leaf', 'Šetrné technologie', 'Používáme profesionální a prověřené postupy, které jsou účinné, bezpečné a šetrné k vašemu domovu.'],
@@ -148,7 +154,7 @@ const PAGES = {
 
   kamera: {name:'Kamerová zkouška', step:1, render: () =>
     hero({photo:'hero-pruvodce', before: stepper(1), kicker:'KROK 02 — <span>KAMEROVÁ ZKOUŠKA</span>', title:'Najdeme příčinu.<br>Bez bourání.', lead:'Inspekční kamerou projedeme kanalizaci i potrubí a přesně ukážeme, kde je porucha. Kamerovou zkoušku můžete objednat i samostatně.', cta:'Objednat kamerovou zkoušku', href:'page.html?view=kontakt', icon:'camera'}) +
-    `<section class="page-section dark" id="page-details"><div class="camera-feature"><div class="cam-icon">${ic('camera')}<span class="tag-red">Častá příčina havárií</span></div><div class="cam-text"><p class="cam-kicker">Kamerová prohlídka</p><h2>Kamerová prohlídka kanalizace a potrubí</h2><p>Inspekční kamerou projedeme kanalizaci i potrubí a přesně ukážeme, kde je příčina – prasklina, ucpání nebo netěsnost. Bez zbytečného bourání a se záznamem jako podkladem pro pojišťovnu.</p>${checklist(['Najdeme přesné místo poruchy', 'Bez zbytečného bourání', 'Fotky a záznam z prohlídky jako podklad'])}<a class="primary-link" href="page.html?view=kontakt">Objednat kamerovou zkoušku ${arrow}</a></div></div></section>` +
+    `<section class="page-section dark" id="page-details"><div class="camera-feature"><div class="cam-icon cam-photo"><img src="${IMG}step_kamera.jpg" width="480" height="480" alt="Inspekční kamera do kanalizace a potrubí" loading="lazy"><span class="tag-red">Častá příčina havárií</span></div><div class="cam-text"><p class="cam-kicker">Kamerová prohlídka</p><h2>Kamerová prohlídka kanalizace a potrubí</h2><p>Inspekční kamerou projedeme kanalizaci i potrubí a přesně ukážeme, kde je příčina – prasklina, ucpání nebo netěsnost. Bez zbytečného bourání a se záznamem jako podkladem pro pojišťovnu.</p>${checklist(['Najdeme přesné místo poruchy', 'Bez zbytečného bourání', 'Fotky a záznam z prohlídky jako podklad'])}<a class="primary-link" href="page.html?view=kontakt">Objednat kamerovou zkoušku ${arrow}</a></div></div></section>` +
     insuranceBox() + stepNav(1)},
 
   diagnostika: {name:'Diagnostika', step:2, render: () =>
@@ -368,7 +374,7 @@ function articleText(t) {
 }
 function renderPoradna() {
   const d = poradna(), arts = d.articles.filter(a => a.published);
-  return hero({photo:'hero-poradna', kicker:'PORADNA HAVARIX', title:'Rady, když vás<br>překvapí voda.', lead:'Praktické návody, ověřené postupy a odpovědi na nejčastější otázky po vytopení, havárii i při řešení vlhkosti.',
+  return hero({photo:'hero_poradna_strop', cls:'hero-photo-day hero-poradna-day', kicker:'PORADNA HAVARIX', title:'Rady, když vás<br>překvapí voda.', lead:'Praktické návody, ověřené postupy a odpovědi na nejčastější otázky po vytopení, havárii i při řešení vlhkosti.',
       extra:`<div class="chips" role="group" aria-label="Témata">${d.categories.map(c => `<button type="button" class="chip" data-cat="${c.id}" aria-pressed="false">${ic(c.icon)}${esc(c.name)}</button>`).join('')}</div>`}) +
     `<section class="page-section dark overlap" id="page-details"><form class="search-bar" role="search" onsubmit="return false"><label for="faq-search" class="sr-only">Hledat v poradně</label>${ic('search')}<input id="faq-search" type="search" placeholder="S čím potřebujete poradit?"><button class="primary-link" type="submit">Hledat</button></form>
       <div class="article-cards">${arts.map(a => `<article class="article-card" data-cat="${a.category}" data-text="${esc((a.title + ' ' + a.perex + ' ' + (a.steps || []).join(' ') + ' ' + a.body).toLocaleLowerCase('cs'))}"><a class="art-link" href="page.html?view=clanek&id=${encodeURIComponent(a.id)}"><span class="tag">${esc(artCat(d, a.category).name)}</span>${artPhoto(a)}<div class="photo-card-body"><h3>${esc(a.title)}</h3>${a.steps && a.steps.length ? `<p class="todo-title">Co udělat hned</p><ol class="todo">${a.steps.map(t => `<li>${esc(t)}</li>`).join('')}</ol>` : `<p>${esc(a.perex)}</p>`}<span class="read-more">Celý článek ${arrow}</span></div></a></article>`).join('')}</div><p class="empty-note" id="art-empty" hidden>Žádný článek neodpovídá hledání.</p></section>` +
